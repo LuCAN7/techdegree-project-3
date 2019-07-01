@@ -59,8 +59,6 @@ $( document ).ready(function(e) {
       $(selectColor.options[6]).show();
     }
   });
-  
-
 
   let selectActivity = document.querySelectorAll('input[type="checkbox"');
   let ActivityLabel = document.querySelectorAll('.activities label');
@@ -71,41 +69,42 @@ $( document ).ready(function(e) {
    
     for (let i = 0; i < selectActivity.length; i++) {
       
-      if (selectActivity[1].checked) {
-        for (let j = 0; j < ActivityLabel.length; j++) {
+      for (let j = 0; j < ActivityLabel.length; j++) {
+        if (selectActivity[1].checked) {
 
-          ActivityLabel[3].style.color = "grey";
-          $(selectActivity[3]).attr("disabled", true);
-        }
+            ActivityLabel[3].style.color = "grey";
+            $(selectActivity[3]).attr("disabled", true);
+          
+        } else if (selectActivity[3].checked) {
+          
+          ActivityLabel[1].style.color = "grey";
+          $(selectActivity[1]).attr("disabled", true);
 
-      } else if (selectActivity[3].checked) {
+        } else if (selectActivity[2].checked) {
 
-        ActivityLabel[1].style.color = "grey";
-        $(selectActivity[1]).attr("disabled", true);
-      } else if (selectActivity[2].checked) {
-
-        ActivityLabel[4].style.color = "grey";
-        $(selectActivity[4]).attr("disabled", true);
+          ActivityLabel[4].style.color = "grey";
+          $(selectActivity[4]).attr("disabled", true);
+          
+        } else if (selectActivity[4].checked) {
+          
+          ActivityLabel[2].style.color = "grey";
+          $(selectActivity[2]).attr("disabled", true);
         
-      } else if (selectActivity[4].checked) {
-        ActivityLabel[2].style.color = "grey";
-        $(selectActivity[2]).attr("disabled", true);
-      
-      }else { 
+        }else { 
 
-        ActivityLabel[3].style.color = "black"; 
-        $(selectActivity[3]).attr("disabled", false);
+          ActivityLabel[3].style.color = "black"; 
+          $(selectActivity[3]).attr("disabled", false);
 
-        ActivityLabel[1].style.color = "black";
-        $(selectActivity[1]).attr("disabled", false);
+          ActivityLabel[1].style.color = "black";
+          $(selectActivity[1]).attr("disabled", false);
 
-        ActivityLabel[4].style.color = "black";
-        $(selectActivity[4]).attr("disabled", false); 
+          ActivityLabel[4].style.color = "black";
+          $(selectActivity[4]).attr("disabled", false); 
 
-        ActivityLabel[2].style.color = "black";
-        $(selectActivity[2]).attr("disabled", false);
+          ActivityLabel[2].style.color = "black";
+          $(selectActivity[2]).attr("disabled", false);
+        }
       }
-     
 
     }
 
