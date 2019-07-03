@@ -40,7 +40,6 @@ $( document ).ready(function(e) {
     }
     
     if ( selectDesign.selectedIndex === 1 ) {
-      console.log('working...1');
       $(selectColor.options[1]).show();
       $(selectColor.options[2]).show();
       $(selectColor.options[3]).show();
@@ -50,7 +49,6 @@ $( document ).ready(function(e) {
     }
     
     if ( selectDesign.selectedIndex === 2 ) {
-      console.log('working...2');
       $(selectColor.options[1]).hide();
       $(selectColor.options[2]).hide();
       $(selectColor.options[3]).hide();
@@ -59,98 +57,76 @@ $( document ).ready(function(e) {
       $(selectColor.options[6]).show();
     }
   });
-
-  let selectActivity = document.querySelectorAll('input[type="checkbox"');
-  let ActivityLabel = document.querySelectorAll('.activities label');
-
-
+  const selectActivity = document.querySelectorAll('input[type="checkbox"');
+  const ActivityLabel = document.querySelectorAll('.activities label');
+  const activityTotal = document.querySelector('#activity-total');
+  const regEx = /\d{3}/g;
+  activityTotal.style.display = 'none';
+ 
+  let costTotal = 0;
   $(selectActivity).change(function (e) { 
-    // e.preventDefault();
-   
-    for (let i = 0; i < selectActivity.length; i++) {
-      
-      for (let j = 0; j < ActivityLabel.length; j++) {
-        if (selectActivity[1].checked) {
-
-            ActivityLabel[3].style.color = "grey";
-            $(selectActivity[3]).attr("disabled", true);
-          
-        } else if (selectActivity[3].checked) {
-          
-          ActivityLabel[1].style.color = "grey";
-          $(selectActivity[1]).attr("disabled", true);
-
-        } else if (selectActivity[2].checked) {
-
-          ActivityLabel[4].style.color = "grey";
-          $(selectActivity[4]).attr("disabled", true);
-          
-        } else if (selectActivity[4].checked) {
-          
-          ActivityLabel[2].style.color = "grey";
-          $(selectActivity[2]).attr("disabled", true);
-        
-        }else { 
-
-          ActivityLabel[3].style.color = "black"; 
-          $(selectActivity[3]).attr("disabled", false);
-
-          ActivityLabel[1].style.color = "black";
-          $(selectActivity[1]).attr("disabled", false);
-
-          ActivityLabel[4].style.color = "black";
-          $(selectActivity[4]).attr("disabled", false); 
-
-          ActivityLabel[2].style.color = "black";
-          $(selectActivity[2]).attr("disabled", false);
-        }
+    // e.preventDefault(); 
+  
+      if (e.currentTarget.checked) {
+        //
+          let cost = parseInt(e.target.parentNode.innerText.match(regEx));
+          costTotal += cost;
+          $(activityTotal).text(`TOTAL: ${costTotal}`);
+          activityTotal.style.display = 'block';
+          console.log(costTotal); 
+      } else { 
+          // 
+          let cost = parseInt(e.target.parentNode.innerText.match(regEx));
+          costTotal -= cost;
+          $(activityTotal).text(`TOTAL: ${costTotal}`);
+          console.log(costTotal);
+                
       }
 
-    }
 
+
+
+      if (selectActivity[1].checked) {
+        // ActivityLabel[3].style.color = "grey";
+        $(ActivityLabel[3]).css('color', 'grey');
+        $(selectActivity[3]).attr("disabled", true);
+        
+      } else if (selectActivity[3].checked) {
+        
+        $(ActivityLabel[1]).css('color', 'grey');
+        $(selectActivity[1]).attr("disabled", true);
+
+      } else if (selectActivity[2].checked) {
+
+        $(ActivityLabel[4]).css('color', 'grey');
+        $(selectActivity[4]).attr("disabled", true);
+        
+      } else if (selectActivity[4].checked) {
+        
+        $(ActivityLabel[2]).css('color', 'grey');
+        $(selectActivity[2]).attr("disabled", true);
       
+      
+      } else if (selectActivity[1].checked && selectActivity[2].checked) {
+        $(ActivityLabel[3]).css('color', 'grey');
+        $(selectActivity[3]).attr("disabled", true);
+        $(ActivityLabel[4]).css('color', 'grey');
+        $(selectActivity[4]).attr("disabled", true);
+        
+        
+      } else { 
+        $(ActivityLabel[3]).css('color', 'black');
+        $(selectActivity[3]).attr("disabled", false);
+        $(ActivityLabel[1]).css('color', 'black');
+        $(selectActivity[1]).attr("disabled", false);
+        $(ActivityLabel[4]).css('color', 'black');
+        $(selectActivity[4]).attr("disabled", false);
+        $(ActivityLabel[2]).css('color', 'black');
+        $(selectActivity[2]).attr("disabled", false);
+      }
+    
+    
+
   });
 
-
 });
-
-
-
-// if (selectActivity[1].checked) {
-//   for (let j = 0; j < ActivityLabel.length; j++) {
-
-//     ActivityLabel[3].style.color = "grey";
-//     $(selectActivity[3]).attr("disabled", true);
-//   }
-
-// } else if (selectActivity[3].checked) {
-
-//   ActivityLabel[1].style.color = "grey";
-//   $(selectActivity[1]).attr("disabled", true);
-// } else { 
-
-//   ActivityLabel[3].style.color = "black"; 
-//   $(selectActivity[3]).attr("disabled", false);
-
-//   ActivityLabel[1].style.color = "black";
-//   $(selectActivity[1]).attr("disabled", false);
-// }
-
-// if (selectActivity[2].checked) {
-//   for (let j = 0; j < ActivityLabel.length; j++) {
-
-//     ActivityLabel[4].style.color = "grey";
-//     $(selectActivity[4]).attr("disabled", true);
-//   }
-
-// } else if (selectActivity[4].checked) {
-//   ActivityLabel[2].style.color = "grey";
-//   $(selectActivity[2]).attr("disabled", true);
-// } else { 
-
-//   ActivityLabel[4].style.color = "black";
-//   $(selectActivity[4]).attr("disabled", false); 
-
-//   ActivityLabel[2].style.color = "black";
-//   $(selectActivity[2]).attr("disabled", false);
-// }
