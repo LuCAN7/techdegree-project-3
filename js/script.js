@@ -29,6 +29,7 @@ $( document ).ready(function(e) {
   // Hide or Show color option based on design selction
   $(selectDesign).change(function (e) { 
       // e.preventDefault();
+      $(selectDesign[0]).hide();
     if( selectDesign.selectedIndex === 0 ){
       for (let i = 0; i < selectColor.options.length; i++) {
           $(selectColor.options).hide();
@@ -130,9 +131,34 @@ $( document ).ready(function(e) {
 
   });
 
+  const payment = document.querySelector('#payment');
   const creditCard = document.querySelector('#credit-card');
   const payPal = document.querySelector('#paypal');
   const bitCoin = document.querySelector('#bitcoin');
 
+  payPal.style.display = 'none';
+  bitCoin.style.display = 'none';
+
+  $(payment).change(function (e) { 
+  // e.preventDefault();
+  $(payment[0]).hide();
+  
+  if( payment.selectedIndex === 2){ 
+    // console.log();
+    payPal.style.display = 'block';
+    bitCoin.style.display = 'none';
+    creditCard.style.display = 'none';
+    
+  } else if ( payment.selectedIndex === 3){
+    bitCoin.style.display = 'block';
+    payPal.style.display = 'none';
+    creditCard.style.display = 'none';
+
+  } else { 
+    creditCard.style.display = 'block';
+  }
+  
+  });
+  
 
 });
