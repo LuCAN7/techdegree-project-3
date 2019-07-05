@@ -160,5 +160,15 @@ $( document ).ready(function(e) {
   
   });
   
+  const registerButton = document.querySelector('button[type="submit"]');
+  const nameValidation = /[a-zA-Z]+/i;
+  const emailValidation = /[a-z0-9]+@[a-z0-9]+.[a-z]+/ig;
+  const activityValidation;
+  const cardValidation = /\d{13}+/;
+  const zipValidation = /\d{5}/;
+  const cvvValidation = /\d{3}/;
+
+
+
 
 });
