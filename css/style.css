@@ -150,6 +150,10 @@ option {
 	margin-top: 1.25em;
 }
 
+.error {
+	color: red;	
+	font-weight: 700;
+}
 /* ================================= 
   Helper Classes
 ==================================== */

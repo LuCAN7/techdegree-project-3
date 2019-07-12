@@ -3,10 +3,15 @@ $( document ).ready(function(e) {
   $('input#name').focus();
   // e.preventDefault();
 
+  /*
+  Wrote everything with very few JQuery functions but read through the Study Guide
+  and realized that i was not using certain functions. THis is the reason why the code is 
+  a litte messy with Vanilla JS and JQuery methods. Just hoping to get this completed and pass.
+  */
+
   const jobRole = document.getElementById('other-title');
   const selectJob = document.querySelector('#title');
   // Hide 'Other' text input 
-
   $(jobRole).hide();
   // Event listener on 'change' to job role
   selectJob.addEventListener('change', function(){
@@ -28,7 +33,12 @@ $( document ).ready(function(e) {
   } 
   // Hide or Show color option based on design selction
   $(selectDesign).change(function (e) { 
-      // e.preventDefault();
+      
+     let designSelected =  $( "select#design option:checked" ).val();
+     let colorSelected =  $( "select#design option:checked" ).val();
+    //  $( "input[type=checkbox][name=bar]:checked" ).val();
+    //  console.log(x);
+     
       $(selectDesign[0]).hide();
     if( selectDesign.selectedIndex === 0 ){
       for (let i = 0; i < selectColor.options.length; i++) {
@@ -40,7 +50,7 @@ $( document ).ready(function(e) {
         }    
     }
     
-    if ( selectDesign.selectedIndex === 1 ) {
+    if ( designSelected === 'js puns' ) {
       $(selectColor.options[1]).show();
       $(selectColor.options[2]).show();
       $(selectColor.options[3]).show();
@@ -49,7 +59,7 @@ $( document ).ready(function(e) {
       $(selectColor.options[6]).hide();
     }
     
-    if ( selectDesign.selectedIndex === 2 ) {
+    if ( designSelected === 'heart js' ) {
       $(selectColor.options[1]).hide();
       $(selectColor.options[2]).hide();
       $(selectColor.options[3]).hide();
@@ -70,7 +80,7 @@ $( document ).ready(function(e) {
   let costTotal = 0;
 
   $(selectActivity).change(function (e) { 
-    // e.preventDefault(); 
+    
       // Sum cost of activitites selected
       if (e.currentTarget.checked) {
         //
@@ -139,124 +149,169 @@ $( document ).ready(function(e) {
   const payPal = document.querySelector('#paypal');
   const bitCoin = document.querySelector('#bitcoin');
 
-  payPal.style.display = 'none';
-  bitCoin.style.display = 'none';
-
-  $(payment).change(function (e) { 
-  // e.preventDefault();
-  $(payment[0]).hide();
+  $(payPal).hide();
+  $(bitCoin).hide();
   
+  $(payment).change(function (e) { 
+
+  $(payment[0]).hide();
   if( payment.selectedIndex === 2){ 
-    // console.log();
-    payPal.style.display = 'block';
-    bitCoin.style.display = 'none';
-    creditCard.style.display = 'none';
+    $(payPal).show();
+    $(bitCoin).hide();
+    $(creditCard).hide();
     
   } else if ( payment.selectedIndex === 3){
-    bitCoin.style.display = 'block';
-    payPal.style.display = 'none';
-    creditCard.style.display = 'none';
-
+    $(bitCoin).show();
+    $(payPal).hide();
+    $(creditCard).hide();
   } else { 
-    creditCard.style.display = 'block';
+    $(creditCard).show();
+    $(payPal).hide();
+    $(bitCoin).hide();
   }
   
   });
+
+  const getName = function() {
+    const nameInput = $('input#name').val();
+    const errorDiv = document.createElement('div');
+    $('.error').remove();
+    $(errorDiv).remove();
+    if (nameInput.length < 1) {
+      $('#name').css('borderColor', 'red');
+      $(errorDiv).html('<span class="error">This field is required</span>');
+      $(nameInput).prepend(errorDiv);
+      return false;
+    } else {
+      $('input#name').css('borderColor', 'lightgrey');
+      // bg color = #bod3e2
+      $('.error').remove();
+      $(errorDiv).remove();
+      return true;
+     }
+  }
   
-  
-
-  const registerButton = document.querySelector('button[type="submit"]');
-
-  $('form').submit(function(e) {
-  
-    // const cardNumber = document.querySelector('#cc-num');
-    const nameValidation = /^[a-zA-Z]+$/i;
-    const emailValidation = /[a-z0-9]+@[a-z0-9]+.[a-z]+$/i;
-    //  /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
-    const activityValidation = false;
-    const cardValidation = /\d{13}/;
-    const zipValidation = /\d{5}/;
-    const cvvValidation = /\d{3}/;
-
-    const errorMessage = document.createElement('div');
-    errorMessage.innerHTML = '<span class="error">This field is required</span>';
-
-
-    const getName = function(name) {
-      const nameInput = $('input#name').val();
+  const getEmail = function() {
+    const emailInput = $('input#email').val();
+    const errorDiv = document.createElement('div');
+    $('.error').remove();
+    $(errorDiv).remove();
+    
+    if (emailInput.length < 1) {
+      $('input#email').css('borderColor', 'red');
+      $('input#email').before('<span class="error">This field is required</span>');
       
-      if (nameInput.length < 1) {
-        $('input#name').css('borderColor', 'red');
-        const error = $('label[for="name"]').append(errorMessage);
-        $(error).show();
-        
-        return false;
-      } else { 
-        $('input#name').css('borderColor', 'lightgrey');
-        $(error).remove();
-        return true;
-       }
-    }
-
-    getName();
-
-    const getEmail = function(email) {
-      const emailInput = $('input#email').val();
-      console.log('email');
-      if (emailInput.length < 1) {
+      return false;
+    } else {
+      // let regEx = /^[A-Z0-9][A-Z0-9._%+-]{0,63}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/;
+      const emailValidation = /[a-z0-9]+@[a-z0-9]+.[a-z]+$/i;
+      const validEmail = emailValidation.test(emailInput);
+      console.log(validEmail);
+      $('input#email').css('borderColor', 'lightgrey');    
+      if (!validEmail) {
         $('input#email').css('borderColor', 'red');
-        // .before('<span class="error">This field is required</span>');
-      } else {
-        // let regEx = /^[A-Z0-9][A-Z0-9._%+-]{0,63}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/;
-        // let validEmail = regEx.test(emailInput);
-        //
-        const emailValidation = /[a-z0-9]+@[a-z0-9]+.[a-z]+$/i;
-        const validEmail = emailValidation.test(emailInput);
-    
-        if (!validEmail) {
-          $('input#email').css('borderColor', 'red');
-          // .before('<span class="error">Please enter a valid email</span>');
-        }
+        $('input#email').before('<span class="error">Please enter a valid email</span>');
+        $(errorDiv).remove();
+        return false;
       }
-    } 
-    const getActivity = function(activity) {
-      if(!selectActivity.checked){
-        $('.activities legend').css('borderColor', 'red');
-        console.log('name');
-        // .after('<span class="error">Please check atleast one activity</span>');
-      }
-    } 
-    const getCredit = function(credit) {
-      const cardInput = $('input#cc-num').val();
-      console.log('name');
-      if (cardInput.length < 13 || cardInput.length > 16) {
-        $('input#cc-num').css('borderColor', 'red');
-        // .after('<span class="error">Credit Card Number must be between 13-16 characters</span></br>');
-      } 
-    } 
-    const getZip = function(zip) {
-      const zipInput = $('input#zip').val();
-      console.log('name');
-      if (zipInput.length < 5) {
-        $('input#zip').css('borderColor', 'red');
-        // .after('<span class="error">Zip must be 5 characters</span>');
-      } 
-    } 
-    const getCVV = function(cvv) {
-      const cvvInput = $('input#cvv').val();
-      console.log('name');
-      if (cvvInput.length < 3 || cvvInput.length > 3) {
-        $('input#cvv').css('borderColor', 'red');
-        // .after('<span class="error">CVV must be 3 characters</span>');
-      } 
+      return true;
     }
+  } 
+  
+  const getActivity = function() {
+    // $('#error').remove();
+    const errorDiv2 = document.createElement('div');
+    $(errorDiv2).attr('class','error' );
+    $(errorDiv2).attr('id','error' );
+    $('#error').remove();
     
+    if($('input[type="checkbox"]').not(':checked')){
+      $(errorDiv2).css('color', 'red');
+      $(errorDiv2).html('<span>Please check at least one Activity</span>');
+      $('.activities').append(errorDiv2);   
+      return false;
+    } else {
+    //  if($('input[type="checkbox"]').is(':checked')) {
+      
+      $('.error').remove();
+      return true;  
+    }  
+  } 
 
+  const getCreditCard = function() {
+    const cardInput = $('input#cc-num').val();
+    const errorDiv = document.createElement('div');
+    $('.error').remove();
+    $(errorDiv).remove();
+    if (cardInput.length < 13) {
+      $('input#cc-num').css('borderColor', 'red');
+      $('input#cc-num').after('<span class="error">All fields is required</span>');
+      $('input#cc-num').after('<span class="error">CC# must be 13-16 characters</span>');
+      
+      return false;
+    } else { 
+      $('input#cc-num').css('borderColor', 'lightgrey');
+      return true;
+    }
+  } 
 
+  const getZip = function() {
+    const zipInput = $('input#zip').val();
+    const errorDiv = document.createElement('div');
+    $('.error').remove();
+    $(errorDiv).remove();
+    if (zipInput.length < 5) {
+      $('input#zip').css('borderColor', 'red');
+      $('input#cc-num').after('<span class="error">All fields is required</span>');
+      $('input#zip').after('<span class="error">ZIP must be 5 characters</span>');
+      
+      return false;
+    } else { 
+      $('input#zip').css('borderColor', 'lightgrey');
+      
+      return true;
+    } 
+  }
+
+  const getCVV = function() {
+    const cvvInput = $('input#cvv').val();
+    const errorDiv = document.createElement('div');
+    
+    $('.error').remove();
+    $(errorDiv).remove();
+    if (cvvInput.length < 3) {
+      $('input#cvv').css('border-color', 'red');
+      $('input#cc-num').after('<span class="error">All fields is required</span>');
+      $('input#cvv').after('<span class="error">CVV must be 3 characters</span>');
+      return false;
+    } else { 
+      $('input#cvv').css('borderColor', 'lightgrey');
+      return true;
+    } 
+  }
+      
+  const validateAll = function (e) {  
+    if(getName && getEmail && getActivity){
+      getName();
+      getEmail();
+      getActivity();   
+      if(payment.selectedIndex === 1){
+        getCreditCard();
+        getCVV();
+        getZip();
+      }
+    } else {
+      return false;
+    }
+    return true;
+  }
+  
+  $('form').submit(function(e) {
     console.log('Submitted...');
-    e.preventDefault();
-
+    validateAll();
+    if(!validateAll){ 
+      e.preventDefault();
+    }
   });
-
 
 });
