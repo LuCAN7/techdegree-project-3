@@ -14,7 +14,7 @@ $( document ).ready(function(e) {
   // Hide 'Other' text input 
   $(jobRole).hide();
   // Event listener on 'change' to job role
-  selectJob.addEventListener('change', function(){
+  $(selectJob).on('change', function(){
     if ( selectJob.selectedIndex === 5 ) {
       // show() input if 'other' is selected else hide()
       $(jobRole).show();
@@ -34,12 +34,10 @@ $( document ).ready(function(e) {
   // Hide or Show color option based on design selction
   $(selectDesign).change(function (e) { 
       
-     let designSelected =  $( "select#design option:checked" ).val();
-     let colorSelected =  $( "select#design option:checked" ).val();
-    //  $( "input[type=checkbox][name=bar]:checked" ).val();
-    //  console.log(x);
-     
-      $(selectDesign[0]).hide();
+    let designSelected =  $( "select#design option:checked" ).val();
+    let colorSelected =  $( "select#design option:checked" ).val();
+   
+    $(selectDesign[0]).hide();
     if( selectDesign.selectedIndex === 0 ){
       for (let i = 0; i < selectColor.options.length; i++) {
           $(selectColor.options).hide();
@@ -76,7 +74,8 @@ $( document ).ready(function(e) {
   
   $(activityTotal).attr('id',"activity-total" );
   $('.activities').append(activityTotal);
-  activityTotal.style.display = 'none';
+  // activityTotal.style.display = 'none';
+  $(activityTotal).hide();
   let costTotal = 0;
 
   $(selectActivity).change(function (e) { 
@@ -87,15 +86,15 @@ $( document ).ready(function(e) {
           let cost = parseInt(e.target.parentNode.innerText.match(regExCost));
           costTotal += cost;
           $(activityTotal).text(`TOTAL: $${costTotal}`);
-          activityTotal.style.display = 'block';
-          console.log(costTotal); 
+          // activityTotal.style.display = 'block';
+          $(activityTotal).show();
+        
       } else { 
           // 
           let cost = parseInt(e.target.parentNode.innerText.match(regExCost));
           costTotal -= cost;
           $(activityTotal).text(`TOTAL: $${costTotal}`);
-          console.log(costTotal);
-                
+                       
       }
       // Disable and/or Enable activities based on schedules
       if (selectActivity[1].checked) {
@@ -173,47 +172,47 @@ $( document ).ready(function(e) {
   });
 
   const getName = function() {
-    const nameInput = $('input#name').val();
-    const errorDiv = document.createElement('div');
-    $('.error').remove();
-    $(errorDiv).remove();
+    $('.error-name').remove();
+    const nameInput = $('#name').val();
+    const errorDiv1 = document.createElement('div');
+    $(errorDiv1).text('This field is required');
+    $(errorDiv1).attr('class', 'error-name');
+    $('label[for="name"]').append(errorDiv1);
+   
     if (nameInput.length < 1) {
       $('#name').css('borderColor', 'red');
-      $(errorDiv).html('<span class="error">This field is required</span>');
-      $(nameInput).prepend(errorDiv);
       return false;
     } else {
-      $('input#name').css('borderColor', 'lightgrey');
+      $('#name').css('borderColor', 'lightgrey');
       // bg color = #bod3e2
-      $('.error').remove();
-      $(errorDiv).remove();
+      $(errorDiv1).remove();
       return true;
      }
   }
   
   const getEmail = function() {
+    $('.error-email').remove();
     const emailInput = $('input#email').val();
-    const errorDiv = document.createElement('div');
-    $('.error').remove();
-    $(errorDiv).remove();
+    const errorDiv2 = document.createElement('div');
+    $(errorDiv2).text('This field is required');
+    $(errorDiv2).attr('class', 'error-email');
+    $('label[for="email"]').append(errorDiv2);
     
     if (emailInput.length < 1) {
-      $('input#email').css('borderColor', 'red');
-      $('input#email').before('<span class="error">This field is required</span>');
-      
+      $('#email').css('borderColor', 'red');
       return false;
     } else {
-      // let regEx = /^[A-Z0-9][A-Z0-9._%+-]{0,63}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/;
+      // const emailValidation = /^[A-Z0-9][A-Z0-9._%+-]{0,20}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/;
       const emailValidation = /[a-z0-9]+@[a-z0-9]+.[a-z]+$/i;
       const validEmail = emailValidation.test(emailInput);
-      console.log(validEmail);
+      
       $('input#email').css('borderColor', 'lightgrey');    
       if (!validEmail) {
-        $('input#email').css('borderColor', 'red');
-        $('input#email').before('<span class="error">Please enter a valid email</span>');
-        $(errorDiv).remove();
+        $('#email').css('borderColor', 'red');
+        $(errorDiv2).text('Please enter a valid email');
         return false;
       }
+      $(errorDiv2).remove();
       return true;
     }
   } 
@@ -240,29 +239,31 @@ $( document ).ready(function(e) {
 
   const getCreditCard = function() {
     const cardInput = $('input#cc-num').val();
-    const errorDiv = document.createElement('div');
+    const errorDiv3 = document.createElement('div');
     $('.error').remove();
-    $(errorDiv).remove();
-    if (cardInput.length < 13) {
-      $('input#cc-num').css('borderColor', 'red');
-      $('input#cc-num').after('<span class="error">All fields is required</span>');
+    $(errorDiv3).remove();
+    if (isNaN(cardInput) && cardInput.length < 1) {
+      $('input#cc-num').css('border-color', 'red');
+      $('input#cc-num').after('<span class="error">Please enter a credit card number</span>');
+      return false;
+    } else if (isNaN(cardInput) && cardInput.length < 10) {
+      $('input#cc-num').css('border-color', 'red');
       $('input#cc-num').after('<span class="error">CC# must be 13-16 characters</span>');
-      
       return false;
     } else { 
-      $('input#cc-num').css('borderColor', 'lightgrey');
+      $('input#cc-num').css('border-color', 'lightgrey');
       return true;
     }
   } 
 
   const getZip = function() {
     const zipInput = $('input#zip').val();
-    const errorDiv = document.createElement('div');
+    const errorDiv4 = document.createElement('div');
     $('.error').remove();
-    $(errorDiv).remove();
+    $(errorDiv4).remove();
     if (zipInput.length < 5) {
       $('input#zip').css('borderColor', 'red');
-      $('input#cc-num').after('<span class="error">All fields is required</span>');
+      // $('input#cc-num').after('<span class="error">All fields is required</span>');
       $('input#zip').after('<span class="error">ZIP must be 5 characters</span>');
       
       return false;
@@ -275,13 +276,13 @@ $( document ).ready(function(e) {
 
   const getCVV = function() {
     const cvvInput = $('input#cvv').val();
-    const errorDiv = document.createElement('div');
+    const errorDiv5 = document.createElement('div');
     
     $('.error').remove();
-    $(errorDiv).remove();
+    $(errorDiv5).remove();
     if (cvvInput.length < 3) {
       $('input#cvv').css('border-color', 'red');
-      $('input#cc-num').after('<span class="error">All fields is required</span>');
+      // $('input#cc-num').after('<span class="error">All fields is required</span>');
       $('input#cvv').after('<span class="error">CVV must be 3 characters</span>');
       return false;
     } else { 
@@ -296,9 +297,9 @@ $( document ).ready(function(e) {
       getEmail();
       getActivity();   
       if(payment.selectedIndex === 1){
-        getCreditCard();
-        getCVV();
-        getZip();
+        // getCreditCard();
+        // getCVV();
+        // getZip();
       }
     } else {
       return false;
@@ -307,6 +308,7 @@ $( document ).ready(function(e) {
   }
   
   $('form').submit(function(e) {
+    e.preventDefault();
     console.log('Submitted...');
     validateAll();
     if(!validateAll){ 
