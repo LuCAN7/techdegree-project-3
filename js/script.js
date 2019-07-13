@@ -1,8 +1,7 @@
 
 $( document ).ready(function(e) {
-  $('input#name').focus();
-  // e.preventDefault();
-
+  $('#name').focus();
+  
   /*
   Wrote everything with very few JQuery functions but read through the Study Guide
   and realized that i was not using certain functions. This is the reason why the code is 
@@ -14,7 +13,7 @@ $( document ).ready(function(e) {
   // Hide 'Other' text input 
   $(jobRole).hide();
   // Event listener on 'change' to job role
-  $(selectJob).on('change', function(){
+  $(selectJob).on('change', function() {
     if ( selectJob.selectedIndex === 5 ) {
       // show() input if 'other' is selected else hide()
       $(jobRole).show();
@@ -32,7 +31,7 @@ $( document ).ready(function(e) {
     } 
   } 
   // Hide or Show color option based on design selction
-  $(selectDesign).change(function (e) { 
+  $(selectDesign).change(function(e) { 
       
     let designSelected =  $( "select#design option:checked" ).val();
     let colorSelected =  $( "select#design option:checked" ).val();
@@ -47,7 +46,7 @@ $( document ).ready(function(e) {
           $(selectColor.options).show();
         }    
     }
-    
+    // Hide and show appropriate color theme
     if ( designSelected === 'js puns' ) {
       $(selectColor.options[1]).show();
       $(selectColor.options[2]).show();
@@ -56,7 +55,7 @@ $( document ).ready(function(e) {
       $(selectColor.options[5]).hide();
       $(selectColor.options[6]).hide();
     }
-    
+    // Hide and show appropriate color theme
     if ( designSelected === 'heart js' ) {
       $(selectColor.options[1]).hide();
       $(selectColor.options[2]).hide();
@@ -76,8 +75,8 @@ $( document ).ready(function(e) {
   $('.activities').append(activityTotal);
   $(activityTotal).hide();
   let costTotal = 0;
-
-  $(selectActivity).change(function (e) {  
+  // Listen to any 'change' on the Activities, whether checked or unchecked
+  $(selectActivity).change(function(e) {  
       // Sum cost of activitites selected
       if (e.currentTarget.checked) {
         // Parse the integer in checkbox label & add/show value to activityToal DIV 
@@ -91,7 +90,6 @@ $( document ).ready(function(e) {
         costTotal -= cost;
         $(activityTotal).text(`TOTAL: $${costTotal}`);          
       }
-     
       // Disable and/or Enable activities based on schedule
       if (selectActivity[1].checked) {
         $(activityLabel[3]).css('color', 'grey');
@@ -134,7 +132,7 @@ $( document ).ready(function(e) {
   $(payPal).hide();
   $(bitCoin).hide();
   
-  $(payment).change(function (e) { 
+  $(payment).change(function(e) { 
   // Hide payment option index 0('Select Payment Method')
   $(payment[0]).hide();
   // Show payPal payment and Hide other options
@@ -155,7 +153,8 @@ $( document ).ready(function(e) {
   }
   
   });
-
+  // All required INPUTS have an error DIV created and style via CSS line 153
+  // This those not inculde the INPUT border error styling
   const getName = function() {
     // Remove DIV with class name '.error-name' if created
     $('.error-name').remove();
@@ -177,9 +176,9 @@ $( document ).ready(function(e) {
   
   const getEmail = function() {
     $('.error-email').remove();
-    const emailInput = $('input#email').val();
+    const emailInput = $('#email').val();
     const errorDiv = document.createElement('div');
-        
+    // validate input length     
     if (emailInput.length < 1) {
       $('#email').css('borderColor', 'red');
       $(errorDiv).text('This field is required');
@@ -206,8 +205,8 @@ $( document ).ready(function(e) {
   const getActivity = function() {
     $('.error-activity').remove();
     const errorDiv = document.createElement('div');
-    
-    if($('input[type="checkbox"]').is(':checked')){
+    // check if a checkbox is checked style and append DIV
+    if($('input[type="checkbox"]').is(':checked')) {
         return true;  
     } else {
       $(errorDiv).text('Please check at least one Activity');
@@ -219,85 +218,94 @@ $( document ).ready(function(e) {
 
   const getCreditCard = function() {
     $('.error-card').remove();
-    const cardInput = $('input#cc-num').val();
+    const cardInput = $('#cc-num').val();
     const errorDiv = document.createElement('div');
     $(errorDiv).attr('class','error-card');
-    $('.col-6').append(errorDiv); 
+    $('.col-6').append(errorDiv);
+    // validate if input length is less than 1
     if (cardInput.length < 1) {
-      $('input#cc-num').css('borderColor', 'red');
+      $('#cc-num').css('borderColor', 'red');
       $(errorDiv).text('Please enter a credit card number');
       return false;
+      // validate if input length is less than 10
     } else if (cardInput.length < 10) {
-      $('input#cc-num').css('borderColor', 'red');
+      $('#cc-num').css('borderColor', 'red');
       $(errorDiv).text('Must be between 13-16 numbers');
       if(isNaN(cardInput)){
         $(errorDiv).text('Not a valid number');
       } 
       return false;
     } else { 
-      $('input#cc-num').css('borderColor', 'lightgrey');
+      $('#cc-num').css('borderColor', 'lightgrey');
       return true;
     }
   } 
 
   const getZip = function() {
     $('.error-zip').remove();
-    const zipInput = $('input#zip').val();
+    const zipInput = $('#zip').val();
     const errorDiv = document.createElement('div');
-    
+    // validate input length 
     if (zipInput.length < 5) {
-      $('input#zip').css('borderColor', 'red');
+      $('#zip').css('borderColor', 'red');
       $(errorDiv).text('ZIP must be 5 characters');
       $(errorDiv).attr('class','error-card');
       $('.col-6').append(errorDiv); 
       return false;
     } else { 
-      $('input#zip').css('borderColor', 'lightgrey');
+      $('#zip').css('borderColor', 'lightgrey');
       return true;
     } 
   }
 
   const getCVV = function() {
     $('.error-cvv').remove();
-    const cvvInput = $('input#cvv').val();
+    const cvvInput = $('#cvv').val();
     const errorDiv = document.createElement('div');
-    
+    // validate input length 
     if (cvvInput.length < 3) {
-      $('input#cvv').css('border-color', 'red');
+      $('#cvv').css('border-color', 'red');
       $(errorDiv).attr('class','error-card');
       $(errorDiv).text('CVV must be 3 characters');
       $('.col-6').append(errorDiv); 
       return false;
     } else { 
-      $('input#cvv').css('borderColor', 'lightgrey');
+      $('#cvv').css('borderColor', 'lightgrey');
       return true;
     } 
   }
-      
-  const validateAll = function (e) {  
-    if(getName && getEmail && getActivity){
-      getName();
-      getEmail();
-      getActivity();   
-      if(payment.selectedIndex === 1){
-        getCreditCard();
-        getZip();
-        getCVV();
+  
+  const masterValidation = function() {
+    getName();
+    getEmail();
+    getActivity();
+    // Check if credit card payment is selected
+    if (payment.selectedIndex === 1) {
+      getCreditCard();
+      getZip();
+      getCVV();  
+      // Validate if functions are truthy and return true else false 
+      if ( getCreditCard() && getZip() && getCVV() ) { 
+        return true;
+      } else {
+        return false;
       }
+    } 
+    // Validate if functions are truthy and return true else false 
+    if ( getName() && getEmail() && getActivity() ) { 
       return true;
-    } else {
+    } else { 
       return false;
     }
   }
   
   $('form').on('submit', function(e) {
-    e.preventDefault();
-    validateAll();
-    // console.log(!validateAll());
-    if(!validateAll){ 
+    // Validate if function is truthy if not preventDefault
+    if (!masterValidation()) {
       e.preventDefault();
-    }
-    console.log('Submitted...');
+    } else { 
+      console.log('Submitted...');
+    } 
   });
 
 });
