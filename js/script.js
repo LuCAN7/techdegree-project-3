@@ -5,7 +5,7 @@ $( document ).ready(function(e) {
 
   /*
   Wrote everything with very few JQuery functions but read through the Study Guide
-  and realized that i was not using certain functions. THis is the reason why the code is 
+  and realized that i was not using certain functions. This is the reason why the code is 
   a litte messy with Vanilla JS and JQuery methods. Just hoping to get this completed and pass.
   */
 
@@ -74,7 +74,6 @@ $( document ).ready(function(e) {
   
   $(activityTotal).attr('id',"activity-total" );
   $('.activities').append(activityTotal);
-  // activityTotal.style.display = 'none';
   $(activityTotal).hide();
   let costTotal = 0;
 
@@ -86,7 +85,6 @@ $( document ).ready(function(e) {
           let cost = parseInt(e.target.parentNode.innerText.match(regExCost));
           costTotal += cost;
           $(activityTotal).text(`TOTAL: $${costTotal}`);
-          // activityTotal.style.display = 'block';
           $(activityTotal).show();
         
       } else { 
@@ -94,7 +92,7 @@ $( document ).ready(function(e) {
           let cost = parseInt(e.target.parentNode.innerText.match(regExCost));
           costTotal -= cost;
           $(activityTotal).text(`TOTAL: $${costTotal}`);
-                       
+                
       }
       // Disable and/or Enable activities based on schedules
       if (selectActivity[1].checked) {
@@ -174,18 +172,17 @@ $( document ).ready(function(e) {
   const getName = function() {
     $('.error-name').remove();
     const nameInput = $('#name').val();
-    const errorDiv1 = document.createElement('div');
-    $(errorDiv1).text('This field is required');
-    $(errorDiv1).attr('class', 'error-name');
-    $('label[for="name"]').append(errorDiv1);
-   
+    const errorDiv = document.createElement('div');
+    
     if (nameInput.length < 1) {
       $('#name').css('borderColor', 'red');
+      $(errorDiv).text('This field is required');
+      $(errorDiv).attr('class', 'error-name');
+      $('label[for="name"]').append(errorDiv);
       return false;
     } else {
       $('#name').css('borderColor', 'lightgrey');
       // bg color = #bod3e2
-      $(errorDiv1).remove();
       return true;
      }
   }
@@ -193,13 +190,13 @@ $( document ).ready(function(e) {
   const getEmail = function() {
     $('.error-email').remove();
     const emailInput = $('input#email').val();
-    const errorDiv2 = document.createElement('div');
-    $(errorDiv2).text('This field is required');
-    $(errorDiv2).attr('class', 'error-email');
-    $('label[for="email"]').append(errorDiv2);
-    
+    const errorDiv = document.createElement('div');
+        
     if (emailInput.length < 1) {
       $('#email').css('borderColor', 'red');
+      $(errorDiv).text('This field is required');
+      $(errorDiv).attr('class', 'error-email');
+      $('label[for="email"]').append(errorDiv);
       return false;
     } else {
       // const emailValidation = /^[A-Z0-9][A-Z0-9._%+-]{0,20}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/;
@@ -209,81 +206,78 @@ $( document ).ready(function(e) {
       $('input#email').css('borderColor', 'lightgrey');    
       if (!validEmail) {
         $('#email').css('borderColor', 'red');
-        $(errorDiv2).text('Please enter a valid email');
+        $(errorDiv).text('Please enter a valid email');
         return false;
       }
-      $(errorDiv2).remove();
+      $(errorDiv).remove();
       return true;
     }
   } 
-  
+
   const getActivity = function() {
-    // $('#error').remove();
-    const errorDiv2 = document.createElement('div');
-    $(errorDiv2).attr('class','error' );
-    $(errorDiv2).attr('id','error' );
-    $('#error').remove();
+    $('.error-activity').remove();
+    const errorDiv = document.createElement('div');
     
-    if($('input[type="checkbox"]').not(':checked')){
-      $(errorDiv2).css('color', 'red');
-      $(errorDiv2).html('<span>Please check at least one Activity</span>');
-      $('.activities').append(errorDiv2);   
-      return false;
+    if($('input[type="checkbox"]').is(':checked')){
+        return true;  
     } else {
-    //  if($('input[type="checkbox"]').is(':checked')) {
-      
-      $('.error').remove();
-      return true;  
-    }  
+      $(errorDiv).text('Please check at least one Activity');
+      $(errorDiv).attr('class','error-activity' );
+      $('.activities').append(errorDiv); 
+      return false;
+      }  
   } 
 
   const getCreditCard = function() {
+    $('.error-card').remove();
     const cardInput = $('input#cc-num').val();
-    const errorDiv3 = document.createElement('div');
-    $('.error').remove();
-    $(errorDiv3).remove();
-    if (isNaN(cardInput) && cardInput.length < 1) {
-      $('input#cc-num').css('border-color', 'red');
-      $('input#cc-num').after('<span class="error">Please enter a credit card number</span>');
+    const errorDiv = document.createElement('div');
+    $(errorDiv).attr('class','error-card');
+    $('.col-6').append(errorDiv); 
+    if (cardInput.length < 1) {
+      $('input#cc-num').css('borderColor', 'red');
+      $(errorDiv).text('Please enter a credit card number');
       return false;
-    } else if (isNaN(cardInput) && cardInput.length < 10) {
-      $('input#cc-num').css('border-color', 'red');
-      $('input#cc-num').after('<span class="error">CC# must be 13-16 characters</span>');
+    } else if (cardInput.length < 10) {
+      $('input#cc-num').css('borderColor', 'red');
+      $(errorDiv).text('Must be between 13-16 numbers');
+      if(isNaN(cardInput)){
+        $(errorDiv).text('Not a valid number');
+      } 
       return false;
     } else { 
-      $('input#cc-num').css('border-color', 'lightgrey');
+      $('input#cc-num').css('borderColor', 'lightgrey');
       return true;
     }
   } 
 
   const getZip = function() {
+    $('.error-zip').remove();
     const zipInput = $('input#zip').val();
-    const errorDiv4 = document.createElement('div');
-    $('.error').remove();
-    $(errorDiv4).remove();
+    const errorDiv = document.createElement('div');
+    
     if (zipInput.length < 5) {
       $('input#zip').css('borderColor', 'red');
-      // $('input#cc-num').after('<span class="error">All fields is required</span>');
-      $('input#zip').after('<span class="error">ZIP must be 5 characters</span>');
-      
+      $(errorDiv).text('ZIP must be 5 characters');
+      $(errorDiv).attr('class','error-card');
+      $('.col-6').append(errorDiv); 
       return false;
     } else { 
       $('input#zip').css('borderColor', 'lightgrey');
-      
       return true;
     } 
   }
 
   const getCVV = function() {
+    $('.error-cvv').remove();
     const cvvInput = $('input#cvv').val();
-    const errorDiv5 = document.createElement('div');
+    const errorDiv = document.createElement('div');
     
-    $('.error').remove();
-    $(errorDiv5).remove();
     if (cvvInput.length < 3) {
       $('input#cvv').css('border-color', 'red');
-      // $('input#cc-num').after('<span class="error">All fields is required</span>');
-      $('input#cvv').after('<span class="error">CVV must be 3 characters</span>');
+      $(errorDiv).attr('class','error-card');
+      $(errorDiv).text('CVV must be 3 characters');
+      $('.col-6').append(errorDiv); 
       return false;
     } else { 
       $('input#cvv').css('borderColor', 'lightgrey');
@@ -297,23 +291,24 @@ $( document ).ready(function(e) {
       getEmail();
       getActivity();   
       if(payment.selectedIndex === 1){
-        // getCreditCard();
-        // getCVV();
-        // getZip();
+        getCreditCard();
+        getZip();
+        getCVV();
       }
+      return true;
     } else {
       return false;
     }
-    return true;
   }
   
-  $('form').submit(function(e) {
+  $('form').on('submit', function(e) {
     e.preventDefault();
-    console.log('Submitted...');
     validateAll();
+    // console.log(!validateAll());
     if(!validateAll){ 
       e.preventDefault();
     }
+    console.log('Submitted...');
   });
 
 });

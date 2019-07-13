@@ -150,7 +150,7 @@ option {
 	margin-top: 1.25em;
 }
 
-.error-name, .error-email, .error-card, .error-zip, .error-cvv {
+.error-name, .error-email, .error-activity, .error-card, .error-zip, .error-cvv {
 	color: red;	
 	font-weight: 700;
 }
