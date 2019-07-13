@@ -187,6 +187,7 @@ $( document ).ready(function(e) {
       $('label[for="email"]').append(errorDiv);
       return false;
     } else {
+      // Other email validation found on the internet
       // const emailValidation = /^[A-Z0-9][A-Z0-9._%+-]{0,20}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/;
       const emailValidation = /[a-z0-9]+@[a-z0-9]+.[a-z]+$/i;
       const validEmail = emailValidation.test(emailInput);
