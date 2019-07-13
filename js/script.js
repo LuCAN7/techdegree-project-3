@@ -25,7 +25,7 @@ $( document ).ready(function(e) {
 
   const selectDesign = document.querySelector('#design');
   const selectColor = document.querySelector('#color');
-  
+  // Hide Color options if design isnt selected
   if( selectDesign.selectedIndex === 0 ){
     for (let i = 0; i < selectColor.options.length; i++) {
         $(selectColor.options).hide();
@@ -71,74 +71,59 @@ $( document ).ready(function(e) {
   const activityLabel = document.querySelectorAll('.activities label');
   const activityTotal = document.createElement('div');
   const regExCost = /\d{3}/g;
-  
+  // Set attribute on #ID, append to DIV and then hide 
   $(activityTotal).attr('id',"activity-total" );
   $('.activities').append(activityTotal);
   $(activityTotal).hide();
   let costTotal = 0;
 
-  $(selectActivity).change(function (e) { 
-    
+  $(selectActivity).change(function (e) {  
       // Sum cost of activitites selected
       if (e.currentTarget.checked) {
-        //
-          let cost = parseInt(e.target.parentNode.innerText.match(regExCost));
-          costTotal += cost;
-          $(activityTotal).text(`TOTAL: $${costTotal}`);
-          $(activityTotal).show();
-        
+        // Parse the integer in checkbox label & add/show value to activityToal DIV 
+        let cost = parseInt(e.target.parentNode.innerText.match(regExCost));
+        costTotal += cost;
+        $(activityTotal).text(`TOTAL: $${costTotal}`);
+        $(activityTotal).show();  
       } else { 
-          // 
-          let cost = parseInt(e.target.parentNode.innerText.match(regExCost));
-          costTotal -= cost;
-          $(activityTotal).text(`TOTAL: $${costTotal}`);
-                
+        //  Parse the integer in checkbox label & minus/show value to activityToal DIV 
+        let cost = parseInt(e.target.parentNode.innerText.match(regExCost));
+        costTotal -= cost;
+        $(activityTotal).text(`TOTAL: $${costTotal}`);          
       }
-      // Disable and/or Enable activities based on schedules
+     
+      // Disable and/or Enable activities based on schedule
       if (selectActivity[1].checked) {
-        // ActivityLabel[3].style.color = "grey";
         $(activityLabel[3]).css('color', 'grey');
         $(selectActivity[3]).attr("disabled", true);
-        
-      } else if (selectActivity[3].checked) {
-        
-        $(activityLabel[1]).css('color', 'grey');
-        $(selectActivity[1]).attr("disabled", true);
-
-      } else if (selectActivity[2].checked) {
-
-        $(activityLabel[4]).css('color', 'grey');
-        $(selectActivity[4]).attr("disabled", true);
-        
-      } else if (selectActivity[4].checked) {
-        
-        $(activityLabel[2]).css('color', 'grey');
-        $(selectActivity[2]).attr("disabled", true);      
-      
-      } else if (selectActivity[1].checked && selectActivity[2].checked) {
-        $(activityLabel[3]).css('color', 'grey');
-        $(selectActivity[3]).attr("disabled", true);
-        $(activityLabel[4]).css('color', 'grey');
-        $(selectActivity[4]).attr("disabled", true);        
-        
-      } else if (selectActivity[3].checked && selectActivity[4].checked) {
-        $(activityLabel[1]).css('color', 'grey');
-        $(selectActivity[1]).attr("disabled", true);
-        $(activityLabel[2]).css('color', 'grey');
-        $(selectActivity[2]).attr("disabled", true); 
-        
-      } else { 
-        $(activityLabel[1]).css('color', 'black');
-        $(selectActivity[1]).attr("disabled", false);
-        $(activityLabel[2]).css('color', 'black');
-        $(selectActivity[2]).attr("disabled", false);
+      } else {
         $(activityLabel[3]).css('color', 'black');
         $(selectActivity[3]).attr("disabled", false);
-        $(activityLabel[4]).css('color', 'black');
-        $(selectActivity[4]).attr("disabled", false);
-       
       }
 
+      if (selectActivity[3].checked) {
+        $(activityLabel[1]).css('color', 'grey');
+        $(selectActivity[1]).attr("disabled", true);
+      } else {
+        $(activityLabel[1]).css('color', 'black');
+        $(selectActivity[1]).attr("disabled", false);
+      }
+      
+      if (selectActivity[2].checked) {
+        $(activityLabel[4]).css('color', 'grey');
+        $(selectActivity[4]).attr("disabled", true); 
+      }  else {
+        $(activityLabel[4]).css('color', 'black');
+        $(selectActivity[4]).attr("disabled", false);
+      }
+
+      if (selectActivity[4].checked) {
+        $(activityLabel[2]).css('color', 'grey');
+        $(selectActivity[2]).attr("disabled", true);      
+      } else {
+        $(activityLabel[2]).css('color', 'black');
+        $(selectActivity[2]).attr("disabled", false);
+      }   
   });
 
   const payment = document.querySelector('#payment');
@@ -150,17 +135,19 @@ $( document ).ready(function(e) {
   $(bitCoin).hide();
   
   $(payment).change(function (e) { 
-
+  // Hide payment option index 0('Select Payment Method')
   $(payment[0]).hide();
+  // Show payPal payment and Hide other options
   if( payment.selectedIndex === 2){ 
     $(payPal).show();
     $(bitCoin).hide();
     $(creditCard).hide();
-    
+    // Show bitCoin payment and Hide other options
   } else if ( payment.selectedIndex === 3){
     $(bitCoin).show();
     $(payPal).hide();
     $(creditCard).hide();
+    // Show creditCard pament option by default
   } else { 
     $(creditCard).show();
     $(payPal).hide();
@@ -170,10 +157,11 @@ $( document ).ready(function(e) {
   });
 
   const getName = function() {
+    // Remove DIV with class name '.error-name' if created
     $('.error-name').remove();
     const nameInput = $('#name').val();
     const errorDiv = document.createElement('div');
-    
+    // Check name input string length. Add text, attribute & append to DIV
     if (nameInput.length < 1) {
       $('#name').css('borderColor', 'red');
       $(errorDiv).text('This field is required');
