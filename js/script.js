@@ -32,10 +32,8 @@ $( document ).ready(function(e) {
   } 
   // Hide or Show color option based on design selction
   $(selectDesign).change(function(e) { 
-      
     let designSelected =  $( "select#design option:checked" ).val();
-    let colorSelected =  $( "select#design option:checked" ).val();
-   
+       
     $(selectDesign[0]).hide();
     if( selectDesign.selectedIndex === 0 ){
       for (let i = 0; i < selectColor.options.length; i++) {
